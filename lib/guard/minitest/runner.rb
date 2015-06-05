@@ -186,15 +186,18 @@ module Guard
           cmd_parts << "-r #{File.expand_path('../runners/old_runner.rb', __FILE__)}"
         end
 
-        # All the work is done through minitest/autorun
-        # and requiring the test files, so this is just
-        # a placeholder so Ruby doesn't try to exceute
-        # code from STDIN.
-        cmd_parts << '-e ""'
+        cmd_parts << generate_runner_script
 
         cmd_parts << '--'
         cmd_parts += cli_options
         cmd_parts
+      end
+
+      # If autorun disabled, it generates ruby code to be run to trigger the
+      # tests. Otherwise, it just generates a placeholder so Ruby doesn't try to
+      # execute code from STDIN
+      def generate_runner_script
+        autorun? ? '-e ""' : '-e "Minitest.run"'
       end
 
       def generate_includes(include_test_folders = true)

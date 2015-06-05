@@ -237,7 +237,7 @@ RSpec.describe Guard::Minitest::Runner do
 
       it 'does not require minitest/autorun' do
         expect(Kernel).to receive(:system).with(
-          "ruby -I\"test\" -I\"spec\" -r ./test/test_minitest.rb#{@require_old_runner} -e \"\" --"
+          "ruby -I\"test\" -I\"spec\" -r ./test/test_minitest.rb#{@require_old_runner} -e \"Minitest.run\" --"
         ) { system('true') }
 
         subject.run(['test/test_minitest.rb'])
